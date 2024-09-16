@@ -1,15 +1,16 @@
 package com.jkbd.course.services;
 
 import com.jkbd.course.entities.Order;
-import com.jkbd.course.entities.User;
 import com.jkbd.course.repositories.OrderRepository;
-import com.jkbd.course.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Service
 public class OrderService {
 
@@ -20,8 +21,17 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+//    public Order findById(Long id) {
+//        Optional<Order> obj = orderRepository.findById(id);
+//        return obj.get();
+//    }
+
+    @Transactional(readOnly = true)
     public Order findById(Long id) {
-        Optional<Order> obj = orderRepository.findById(id);
-        return obj.get();
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
+        log.debug("Order found: " + order);
+        log.debug("Order items: " + order.getItems());
+        return order;
     }
 }
