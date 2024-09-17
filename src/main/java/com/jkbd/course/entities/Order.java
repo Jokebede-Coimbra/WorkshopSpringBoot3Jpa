@@ -1,7 +1,5 @@
 package com.jkbd.course.entities;
 
-import com.jkbd.course.entities.OrderItem;
-import com.jkbd.course.entities.User;
 import com.jkbd.course.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
